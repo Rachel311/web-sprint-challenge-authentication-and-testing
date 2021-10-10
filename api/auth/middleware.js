@@ -20,7 +20,7 @@ const checkUsernameExists = async(req, res, next) => {
       }
 
 }
-const validateUserExsist = async(req, res, next) => {
+const validateUserExist = async(req, res, next) => {
     console.log(req.body.username)
     try{
         const [user] = await db.findBy({username: req.body.username})
@@ -50,5 +50,5 @@ const checkBodyValidation = (req,res,next)=>{
 module.exports ={
     checkUsernameExists,
     checkBodyValidation,
-    validateUserExsist
+    validateUserExist
 } 
