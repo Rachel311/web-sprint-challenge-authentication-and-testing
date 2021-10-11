@@ -16,6 +16,25 @@ const { checkUsernameExists, checkBodyValidation, validateUserExist } = require(
       .catch(next)
 });
 
+// router.post("/register",  (req, res) => {
+//   // implement registration
+//   let userData = req.body;
+//   const hash = bcrypt.hashSync(userData.password, 8);
+//   userData.password = hash;
+//   User.add(userData)
+//     .then((user) => {
+//       const token = buildToken(user);
+//       res.status(201).json({
+//         message: `Thanks for registering, ${userData.username}!`,
+//         user,
+//         token: token,
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).json({ Error: "failed to retrieve database", err });
+//     });
+// });
+
 router.post('/login', checkBodyValidation, validateUserExist, (req, res, next) => {
   if(bcrypt.compareSync(req.body.password, req.user.password)){
     const token = buildToken(req.user)

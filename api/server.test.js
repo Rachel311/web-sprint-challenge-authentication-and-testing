@@ -4,6 +4,16 @@ const db = require('../data/dbConfig');
 
 const testingData = {username: 'name', password: 'pass'}
 
+beforeAll(async () => {
+  await db.migrate.rollback();
+  await db.migrate.latest();
+})
+
+afterAll(async () => {
+  await db.migrate.rollback();
+  await db.migrate.latest();
+})
+
 
 test('sanity', () => {
   expect(true).toBe(true)
@@ -31,27 +41,27 @@ describe('[POST] /api/auth/register', () => {
     expect(res.status).toBe(201)  
   })
 
-  it('invalid request returning status: 500', async () => {
+  it('invalid request returning status: 422', async () => {
     const res = await request(server)
       .post('/api/auth/register')
       .send(testingData);
-    expect(res.status).toBe(500)  
+    expect(res.status).toBe(422)  
   })
 });
 
 describe('[POST]/api/auth/login', () => {
 
-  it('returns status: 500 when valid credentials are provided', async () => {
+  it('returns status: 200 when valid credentials are provided', async () => {
     const res = await request(server)
       .post('/api/auth/login')
       .send(testingData);
-    expect(res.status).toBe(500)  
+    expect(res.status).toBe(200)  
   })
 
   it('invalid payload with error message of : Invalid credentials', async () => {
     const res = await request(server)
     .post('/api/auth/login')
     .send({ username: 'Candace', password: 'n/a' })
-    expect(res.status).toBe(500)
+    expect(res.status).toBe(422)
   })
 })
